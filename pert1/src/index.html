@@ -1,0 +1,71 @@
+<html>
+    <head>
+        <div class = "topnavbar">
+            <a class="active" href="index.html">Home</a>
+            <a href="profiles.html">Profiles</a>
+        </div>
+        <style>
+            .topnavbar{
+                background-color: black;
+                overflow: hidden;
+            }
+
+            .topnavbar a {
+                float: left;
+                color:bisque;
+                text-align: center;
+                padding: 14px 16px;
+                text-decoration: none;
+                font-size: 17px;
+            }
+
+            .topnavbar a:hover {
+                background-color: whitesmoke;
+                color: black;
+            }
+
+            .topnavbar a:active {
+                background-color: greenyellow;
+                color: whitesmoke;
+            }
+
+            .personal{
+                background-color: coral;
+                color: aliceblue;
+                border: 2px solid black;
+                margin: 20px;
+                padding: 20px;
+            }
+
+            .body {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                min-height: 100vh;
+                margin: 0;
+            }
+
+            .content {
+                text-align: center;
+            }
+
+            img {
+                max-width: 100%;
+                height: auto;
+                display: block;
+                margin: 0 auto;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div class="content">
+            <picture>
+                <source media="(min-width: 650px)" srcset="lono.jpg">
+                <img src="lono.jpg" alt="Lono">
+            </picture>    
+            <p>This is Me</p>
+        </div>
+    </body>
+</html>
