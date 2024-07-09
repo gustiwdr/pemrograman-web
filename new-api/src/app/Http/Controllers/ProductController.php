@@ -3,7 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Validation\Rule;
 
 class ProductController extends Controller
 {
@@ -14,19 +18,38 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $data = Product::get();
-        if(!$data) { // Jika tidak ada data
+        // $data = Product::get();
+        // if(!$data) {
+        //     return response()->json(
+        //         [
+        //             'success' => false,
+        //             'message' => 'Produt Not Found'
+        //         ]
+        //         );
+        //     } else {
+        //      return response()->json(
+        //         [
+        //             'success' => true,
+        //             'message' => 'Success Retrive Data',
+        //             'data' => $data
+        //         ]
+        //      ) ; 
+        // }
+
+        $data = Product::all();
+        if(!$data) {
             return response()->json([
-                'success' => False,
-                'message' => 'Product Not Found',
+                "message" => "Data Not Found"
             ]);
-        } else {
-            return response()->json([
-                'success' => True,
-                'message' => 'Success Retrive Data',
-                'data' => $data
-            ]);
-        };
+        }
+
+        Log::info('Showing all product');
+
+        return response()->json([
+            "success" => true,
+            "message" => "Success retrieve data",
+            "data" => $data
+        ]);
     }
 
     /**
@@ -47,7 +70,25 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, [
+            'data.attributes.name' => 'required|string',
+            'data.attributes.price' => 'required|integer',
+        ]);
+
+        $data = new Product();
+        $data->name = $request->input('data.attributes.name');
+        $data->price = $request->input('data.attributes.price');
+        $data->save();
+
+        Log::info('Adding product');
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Successfully Added',
+            'data' => [
+                'attributes' => $data,
+            ]
+        ]);
     }
 
     /**
@@ -56,9 +97,22 @@ class ProductController extends Controller
      * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function show(Product $product)
+    public function show($id)
     {
-        //
+        $data = Product::find($id);
+        if(!$data) {
+            return response()->json([
+                "message" => "Parameter Not Found"
+            ]);
+        }
+
+        Log::info('Showing product by id');
+
+        return response()->json([
+            "success" => true,
+            "message" => "Success retrieve data",
+            "data" => $data
+        ]);
     }
 
     /**
@@ -67,9 +121,34 @@ class ProductController extends Controller
      * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function edit(Product $product)
+    public function edit(Request $request, $id)
     {
-        //
+        $this->validate($request, [
+            'data.attributes.name' => 'required|string',
+            'data.attributes.price' => 'required|integer',
+        ]);
+
+        $data = Product::find($id);
+
+        if($data) {
+            $data->name = $request->input('data.attributes.name');
+            $data->price = $request->input('data.attributes.price');
+            $data->save();
+
+            Log::info('Updating product by id');
+
+            return response()->json([
+                "success" => true,
+                "message" => "Success Updated",
+                "data" => [
+                    "attributes" => $data
+                ]
+            ]);        
+        } else {
+            return response()->json([
+                "message" => "Parameter Not Found"
+            ]);
+        }
     }
 
     /**
@@ -90,8 +169,25 @@ class ProductController extends Controller
      * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Product $product)
+    public function destroy($id)
     {
-        //
+        $data = Product::find($id);
+        if($data) {
+            $data->delete();
+
+            Log::info('Deleting product by id');
+
+            return response()->json([
+                "success" => true,
+                "message" => "Success Deleted",
+                "data" => [
+                    "attributes" => $data
+                ]
+            ]);   
+        } else {
+            return response()->json([
+                "message" => "Parameter Not Found"
+            ]);
+        }
     }
 }

@@ -31,15 +31,41 @@ $router->group(['prefix' => 'api/v1/testing', 'middleware' => 'auth'], function(
 
 $router->group(['prefix' => 'api/v1/customer', 'middleware' => 'auth'], function() use ($router) {
     $router->get('/', ['uses' => 'CustomerController@index']);
+    $router->post('/', ['uses' => 'CustomerController@store']);
+    $router->get('/{id}', ['uses' => 'CustomerController@show']);
+    $router->put('/{id}', ['uses' => 'CustomerController@edit']);
+    $router->delete('/{id}', ['uses' => 'CustomerController@destroy']);
 });
 
 $router->group(['prefix' => 'api/v1/product', 'middleware' => 'auth'], function() use ($router) {
     $router->get('/', ['uses' => 'ProductController@index']);
+    $router->post('/', ['uses' => 'ProductController@store']);
+    $router->get('/{id}', ['uses' => 'ProductController@show']);
+    $router->put('/{id}', ['uses' => 'ProductController@edit']);
+    $router->delete('/{id}', ['uses' => 'ProductController@destroy']);
 });
 
 $router->group(['prefix' => 'api/v1/order', 'middleware' => 'auth'], function() use ($router) {
     $router->get('/', ['uses' => 'OrderController@index']);
+    $router->post('/', ['uses' => 'OrderController@store']);
+    $router->get('/{id}', ['uses' => 'OrderController@show']);
+    $router->put('/{id}', ['uses' => 'OrderController@edit']);
+    $router->delete('/{id}', ['uses' => 'OrderController@destroy']);
 });
+
+$router->group(['prefix' => 'api/v1/orderitem', 'middleware' => 'auth'], function() use ($router) {
+    $router->get('/', ['uses' => 'OrderItemController@index']);
+    $router->post('/', ['uses' => 'OrderItemController@add']);
+    $router->get('/{id}', ['uses' => 'OrderItemController@show']);
+    $router->delete('/{id}', ['uses' => 'OrderItemController@delete']);
+    $router->put('/{id}', ['uses' => 'OrderItemController@update']);
+});
+
+$router->group(['prefix' => 'api/v1/orderitem-join', 'middleware' => 'auth'], function() use ($router) {
+    $router->get('/', ['uses' => 'OrderItemController@showDataJoin']);
+    $router->get('/{id}', ['uses' => 'OrderItemController@showIdJoin']);
+});
+
 
 // $router->group(['prefix' => 'api/v1/product', 'middleware' => 'auth'], function() use ($router) {
 //     $router->get('/', ['uses' => 'ProductController@index']);
